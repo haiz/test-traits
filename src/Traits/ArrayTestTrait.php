@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\TestTrait\Traits;
+namespace Haiz\TestTrait\Traits;
 
 /**
  * Array Test Trait.
@@ -16,7 +16,7 @@ trait ArrayTestTrait
      *
      * @return mixed|null The value from the array or the default value
      */
-    protected function getArrayValue(array $data, string $path, $default = null)
+    protected function getArrayValue($data, $path, $default = null)
     {
         $parts = explode('.', $path);
 

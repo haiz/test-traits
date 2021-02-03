@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\TestTrait\Traits;
+namespace Haiz\TestTrait\Traits;
 
 use DI\Container;
 use UnexpectedValueException;
@@ -26,7 +26,7 @@ trait ContainerTestTrait
      *
      * @return void
      */
-    protected function setUpContainer(Container $container = null): void
+    protected function setUpContainer($container = null)
     {
         if ($container instanceof Container) {
             $this->container = $container;

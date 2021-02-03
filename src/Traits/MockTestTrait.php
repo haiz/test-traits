@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\TestTrait\Traits;
+namespace Haiz\TestTrait\Traits;
 
 use DI\Container;
 use InvalidArgumentException;
@@ -20,7 +20,7 @@ trait MockTestTrait
      *
      * @return MockObject The mock
      */
-    protected function mock(string $class): MockObject
+    protected function mock($class)
     {
         if (!class_exists($class)) {
             throw new InvalidArgumentException(sprintf('Class not found: %s', $class));

@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\TestTrait\Traits;
+namespace Haiz\TestTrait\Traits;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,7 +23,7 @@ trait HttpJsonTestTrait
      *
      * @return ServerRequestInterface
      */
-    protected function createJsonRequest(string $method, $uri, array $data = null): ServerRequestInterface
+    protected function createJsonRequest($method, $uri, $data = null)
     {
         $request = $this->createRequest($method, $uri);
 
@@ -41,7 +41,7 @@ trait HttpJsonTestTrait
      *
      * @return array The data
      */
-    protected function getJsonData(ResponseInterface $response): array
+    protected function getJsonData($response)
     {
         $actual = (string)$response->getBody();
         $this->assertJson($actual);
@@ -57,7 +57,7 @@ trait HttpJsonTestTrait
      *
      * @return void
      */
-    protected function assertJsonData(array $expected, ResponseInterface $response): void
+    protected function assertJsonData($expected, $response)
     {
         $this->assertSame($expected, $this->getJsonData($response));
     }
@@ -69,7 +69,7 @@ trait HttpJsonTestTrait
      *
      * @return void
      */
-    protected function assertJsonContentType(ResponseInterface $response): void
+    protected function assertJsonContentType($response)
     {
         $this->assertStringContainsString('application/json', $response->getHeaderLine('Content-Type'));
     }
@@ -83,7 +83,7 @@ trait HttpJsonTestTrait
      *
      * @return void
      */
-    protected function assertJsonValue($expected, string $path, ResponseInterface $response)
+    protected function assertJsonValue($expected, $path, $response)
     {
         $this->assertSame($expected, $this->getArrayValue($this->getJsonData($response), $path));
     }

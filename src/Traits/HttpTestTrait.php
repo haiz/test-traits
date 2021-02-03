@@ -1,10 +1,9 @@
 <?php
 
-namespace Selective\TestTrait\Traits;
+namespace Haiz\TestTrait\Traits;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
-use Slim\Psr7\Factory\ServerRequestFactory;
 
 /**
  * HTTP Test Trait.
@@ -20,9 +19,9 @@ trait HttpTestTrait
      *
      * @return ServerRequestInterface The request
      */
-    protected function createRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+    protected function createRequest($method, $uri, $serverParams = [])
     {
-        return (new ServerRequestFactory())->createServerRequest($method, $uri, $serverParams);
+        return (new \Factory\ServerRequestFactory())->createServerRequest($method, $uri, $serverParams);
     }
 
     /**
@@ -34,7 +33,7 @@ trait HttpTestTrait
      *
      * @return ServerRequestInterface
      */
-    protected function createFormRequest(string $method, $uri, array $data = null): ServerRequestInterface
+    protected function createFormRequest($method, $uri, $data = null)
     {
         $request = $this->createRequest($method, $uri);
 

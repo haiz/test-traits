@@ -1,6 +1,6 @@
 <?php
 
-namespace Selective\TestTrait\Traits;
+namespace Haiz\TestTrait\Traits;
 
 use DomainException;
 use PDO;
@@ -26,7 +26,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function setUpDatabase(string $schemaFile = null): void
+    protected function setUpDatabase($schemaFile = null)
     {
         if (isset($schemaFile)) {
             $this->schemaFile = $schemaFile;
@@ -48,7 +48,7 @@ trait DatabaseTestTrait
      *
      * @return PDO The PDO instance
      */
-    protected function getConnection(): PDO
+    protected function getConnection()
     {
         return $this->container->get(PDO::class);
     }
@@ -74,7 +74,7 @@ trait DatabaseTestTrait
      *
      * @return string The version
      */
-    private function getMySqlVersion(): string
+    private function getMySqlVersion()
     {
         $statement = $this->getConnection()->query("SHOW VARIABLES LIKE 'version';");
 
@@ -96,7 +96,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function createTables(): void
+    protected function createTables()
     {
         if (defined('DB_TEST_TRAIT_INIT')) {
             return;
@@ -115,7 +115,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function dropTables(): void
+    protected function dropTables()
     {
         $pdo = $this->getConnection();
 
@@ -148,7 +148,7 @@ trait DatabaseTestTrait
      *
      * @return PDOStatement The statement
      */
-    private function createQueryStatement(string $sql): PDOStatement
+    private function createQueryStatement(string $sql)
     {
         $statement = $this->getConnection()->query($sql, PDO::FETCH_ASSOC);
 
@@ -166,7 +166,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function importSchema(): void
+    protected function importSchema()
     {
         if (!$this->schemaFile) {
             throw new UnexpectedValueException('The path for schema.sql is not defined');
@@ -189,7 +189,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function truncateTables(): void
+    protected function truncateTables()
     {
         $pdo = $this->getConnection();
 
@@ -222,7 +222,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function insertFixtures(array $fixtures): void
+    protected function insertFixtures($fixtures)
     {
         foreach ($fixtures as $fixture) {
             $object = new $fixture();
@@ -241,7 +241,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function insertFixture(string $table, array $row): void
+    protected function insertFixture($table, array $row)
     {
         $fields = array_keys($row);
 
@@ -265,7 +265,7 @@ trait DatabaseTestTrait
      *
      * @return PDOStatement The statement
      */
-    private function createPreparedStatement(string $sql): PDOStatement
+    private function createPreparedStatement($sql)
     {
         $statement = $this->getConnection()->prepare($sql);
 
@@ -287,13 +287,8 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function assertTableRow(
-        array $expectedRow,
-        string $table,
-        int $id,
-        array $fields = null,
-        string $message = ''
-    ): void {
+    protected function assertTableRow($expectedRow, $table, $id, $fields = null, $message = '')
+    {
         $this->assertSame(
             $expectedRow,
             $this->getTableRowById($table, $id, $fields ?: array_keys($expectedRow)),
@@ -312,7 +307,7 @@ trait DatabaseTestTrait
      *
      * @return array<mixed> Row
      */
-    protected function getTableRowById(string $table, int $id, array $fields = null): array
+    protected function getTableRowById($table, $id, $fields = null)
     {
         $sql = sprintf('SELECT * FROM `%s` WHERE `id` = :id', $table);
         $statement = $this->createPreparedStatement($sql);
@@ -342,13 +337,8 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function assertTableRowEquals(
-        array $expectedRow,
-        string $table,
-        int $id,
-        array $fields = null,
-        string $message = ''
-    ): void {
+    protected function assertTableRowEquals($expectedRow, $table, $id, $fields = null, $message = '')
+    {
         $this->assertEquals(
             $expectedRow,
             $this->getTableRowById($table, $id, $fields ?: array_keys($expectedRow)),
@@ -367,13 +357,8 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function assertTableRowValue(
-        $expected,
-        string $table,
-        int $id,
-        string $field,
-        string $message = ''
-    ): void {
+    protected function assertTableRowValue($expected, $table, $id, $field, $message = '')
+    {
         $actual = $this->getTableRowById($table, $id, [$field])[$field];
         $this->assertSame($expected, $actual, $message);
     }
@@ -387,7 +372,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function assertTableRowCount(int $expected, string $table, string $message = ''): void
+    protected function assertTableRowCount($expected, $table, $message = '')
     {
         $this->assertSame($expected, $this->getTableRowCount($table), $message);
     }
@@ -399,13 +384,13 @@ trait DatabaseTestTrait
      *
      * @return int The number of rows
      */
-    protected function getTableRowCount(string $table): int
+    protected function getTableRowCount($table)
     {
         $sql = sprintf('SELECT COUNT(*) AS counter FROM `%s`;', $table);
         $statement = $this->createQueryStatement($sql);
         $row = $statement->fetch(PDO::FETCH_ASSOC) ?: [];
 
-        return (int)($row['counter'] ?? 0);
+        return (int)(isset($row['counter']) ? $row['counter'] : 0);
     }
 
     /**
@@ -417,7 +402,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function assertTableRowExists(string $table, int $id, string $message = ''): void
+    protected function assertTableRowExists($table, $id, $message = '')
     {
         $this->assertTrue((bool)$this->findTableRowById($table, $id), $message);
     }
@@ -432,7 +417,7 @@ trait DatabaseTestTrait
      *
      * @return array<mixed> Row
      */
-    protected function findTableRowById(string $table, int $id): array
+    protected function findTableRowById($table, $id)
     {
         $sql = sprintf('SELECT * FROM `%s` WHERE `id` = :id', $table);
         $statement = $this->createPreparedStatement($sql);
@@ -450,7 +435,7 @@ trait DatabaseTestTrait
      *
      * @return void
      */
-    protected function assertTableRowNotExists(string $table, int $id, string $message = ''): void
+    protected function assertTableRowNotExists($table, $id, $message = '')
     {
         $this->assertFalse((bool)$this->findTableRowById($table, $id), $message);
     }
