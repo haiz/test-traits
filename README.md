@@ -10,7 +10,7 @@ A collection of PHPUnit test traits.
 
 ## Requirements
 
-* PHP 7.2+ or 8.0+
+* PHP 5.6.x
 
 ## Installation
 
